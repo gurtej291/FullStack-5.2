@@ -1,0 +1,90 @@
+
+class Student {
+  constructor(id, name, age, course) {
+    this.id = id;
+    this.name = name;
+    this.age = age;
+    this.course = course;
+  }
+}
+
+// -------------------------------
+// CONTROLLER
+// -------------------------------
+class StudentController {
+  constructor() {
+    this.students = []; // acts as in-memory database
+  }
+
+  // CREATE
+  addStudent(name, age, course) {
+    const id = this.students.length + 1;
+    const newStudent = new Student(id, name, age, course);
+    this.students.push(newStudent);
+    console.log(`✅ Student Added:`, newStudent);
+  }
+
+  // READ
+  getAllStudents() {
+    console.log("\n📋 All Students:");
+    if (this.students.length === 0) console.log("⚠️ No students in database");
+    else console.table(this.students);
+  }
+
+  // UPDATE
+  updateStudent(id, updatedData) {
+    const student = this.students.find(s => s.id === id);
+    if (student) {
+      Object.assign(student, updatedData);
+      console.log(`✏️ Student Updated (ID: ${id})`);
+    } else {
+      console.log(`❌ Student with ID ${id} not found`);
+    }
+  }
+
+  // DELETE
+  deleteStudentByName(name) {
+    const index = this.students.findIndex(s => s.name.toLowerCase() === name.toLowerCase());
+    if (index !== -1) {
+      const deleted = this.students.splice(index, 1)[0];
+      console.log(`🗑️ Student Deleted Permanently: ${deleted.name}`);
+    } else {
+      console.log(`❌ Student named ${name} not found`);
+    }
+  }
+}
+
+// -------------------------------
+// VIEW
+// -------------------------------
+function displayTitle() {
+  console.log("=========================================");
+  console.log(" STUDENT MANAGEMENT SYSTEM (MVC DEMO) ");
+  console.log("=========================================\n");
+}
+
+// -------------------------------
+// MAIN
+// -------------------------------
+function main() {
+  displayTitle();
+
+  const controller = new StudentController();
+
+  // CREATE (Replaced Navpreet → Simran)
+  controller.addStudent("Gurtej", 22, "Computer Science");
+  controller.addStudent("Inderpreet", 21, "Information Technology");
+  controller.addStudent("Karan", 23, "Electronics");
+
+  // READ
+  controller.getAllStudents();
+
+  // DELETE Simran permanently
+  controller.deleteStudentByName("Simran");
+
+  // READ final (Simran removed)
+  controller.getAllStudents();
+}
+
+// Run system
+main();
